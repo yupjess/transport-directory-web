@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="PH Transport Hub & Adventist Directory" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  </head>
+  <body class="bg-slate-50 text-slate-900 font-sans antialiased">
+    <slot />
+    <script>
+      function showTab(tabId: string) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => {
+          el.classList.remove('active-tab');
+          el.classList.add('text-slate-600');
+        });
+
+        document.getElementById(`content-${tabId}`)?.classList.add('active');
+        const tabBtn = document.getElementById(`tab-${tabId}`);
+        tabBtn?.classList.add('active-tab');
+        tabBtn?.classList.remove('text-slate-600');
+      }
+
+      (window as any).showTab = showTab;
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>
