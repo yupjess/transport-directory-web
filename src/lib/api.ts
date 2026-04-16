@@ -1,7 +1,7 @@
 // API client functions for PH Transport API and Adventist Directory API
 
-const TRANSPORT_API_URL = import.meta.env.PUBLIC_TRANSPORT_API_URL || 'https://ph-transport-api.vercel.app';
-const ADVENTIST_API_URL = import.meta.env.PUBLIC_ADVENTIST_API_URL || 'https://adventist-scraper-api.vercel.app';
+const TRANSPORT_API_URL = 'https://ph-transport-api.vercel.app';
+const ADVENTIST_API_URL = 'https://adventist-scraper-api.vercel.app';
 
 export interface FuelPrice {
   brand: string;

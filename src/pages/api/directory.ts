@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 
-const ADVENTIST_API_URL = import.meta.env.PUBLIC_ADVENTIST_API_URL || 'https://adventist-scraper-api.vercel.app';
+const ADVENTIST_API_URL = 'https://adventist-scraper-api.vercel.app';
 
 // Comprehensive fallback static data for when API is unresponsive
 const FALLBACK_DATA = [
