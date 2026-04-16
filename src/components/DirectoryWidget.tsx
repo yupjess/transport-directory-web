@@ -90,14 +90,30 @@ export default function DirectoryWidget() {
   // Search query
   const { data: searchData, isLoading: searchLoading, refetch: refetchSearch } = useQuery({
     queryKey: ['directory-search', searchQuery],
-    queryFn: () => searchDirectory(searchQuery),
+    queryFn: async (query: string) => {
+      const result = await searchDirectory(query);
+      // Adventist API returns { success: true, data: [...], total: ... }
+      // Normalize to { data: [...] }
+      if (result.data) return result;
+      // Handle case where search returns different format
+      if (Array.isArray(result)) return { data: result };
+      return { data: [] };
+    },
     enabled: searchQuery.length > 0,
   });
 
   // Paginated scrape
   const { data: scrapeData, isLoading: scrapeLoading, refetch: refetchScrape } = useQuery({
     queryKey: ['directory-scrape', pageStart, pageEnd],
-    queryFn: () => scrapeDirectory(pageStart, pageEnd),
+    queryFn: async (start: number, end: number) => {
+      const result = await scrapeDirectory(start, end);
+      // Adventist API returns { success: true, data: [...], total_records: ... }
+      // Normalize to { data: [...] }
+      if (result.data) return result;
+      // Handle case where result is an array directly
+      if (Array.isArray(result)) return { data: result };
+      return { data: [] };
+    },
     enabled: searchQuery.length === 0,
   });
 

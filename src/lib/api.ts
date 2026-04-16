@@ -42,10 +42,19 @@ export async function fetchFuelPrices(): Promise<{ data: FuelPrice[] }> {
   return res.json();
 }
 
-export async function fetchFuelBrands(): Promise<{ brands: string[] }> {
+export async function fetchFuelBrands(): Promise<{ types: string[] }> {
   const res = await fetch(`${TRANSPORT_API_URL}/fuel/brands`);
   if (!res.ok) throw new Error('Failed to fetch fuel brands');
-  return res.json();
+  const data = await res.json();
+  // API returns { data: [...], stale: false } but frontend expects { types: [...] }
+  // Handle both formats
+  if (Array.isArray(data)) {
+    return { types: data };
+  }
+  if (data.data && Array.isArray(data.data)) {
+    return { types: data.data };
+  }
+  return { types: [] };
 }
 
 export async function fetchCommuterTypes(): Promise<{ types: string[] }> {

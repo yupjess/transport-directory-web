@@ -13,7 +13,13 @@ export default function TransportWidget() {
   // Fetch fuel prices
   const { data: fuelData, isLoading: fuelLoading, error: fuelError, refetch: refetchFuel } = useQuery({
     queryKey: ['fuel-prices'],
-    queryFn: fetchFuelPrices,
+    queryFn: async () => {
+      const res = await fetchFuelPrices();
+      // API returns { data: [...], stale: false } or { data: [...], stale: false }
+      // Normalize to { data: [...] }
+      if (res.data) return res;
+      return { data: [] };
+    },
   });
 
   // Fetch commuter types
